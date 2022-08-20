@@ -1,4 +1,4 @@
-const initialState = []; // can be object or an array accoringly 
+const initialState = []; // can be object or an array accoringly
 
 const todoReducer = (state = initialState, action) => {
   // Deep copy
@@ -6,11 +6,7 @@ const todoReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case "ADD_TODO":
-      //  action.payload;
-
       newState.push(action.payload);
-      
-      console.log("reducer ---->", newState);
       return newState;
 
     case "DELETE_TODO":
@@ -18,10 +14,21 @@ const todoReducer = (state = initialState, action) => {
       return updateState;
 
     case "UPDATE_TODO":
-      //
-      return newState;
+      const updateTodo = newState.map((todo) => {
+        if (todo.id === action.payload.id) {
+          return {
+            ...todo,
+            task: action.payload.task,
+          };
+        }
+
+        return todo;
+      });
+      return updateTodo;
     default:
-      return newState;
+      // Unclear
+      // But to understand -> do not use deepcopy for default state
+      return state;
   }
 };
 

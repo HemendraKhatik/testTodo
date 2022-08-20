@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, deleteTodo } from "../../redux/actions/todoActions";
+import {
+  addTodo,
+  deleteTodo,
+  updateTodo,
+} from "../../redux/actions/todoActions";
 import { generateId } from "../../utils/helper";
 import TodoItem from "../TodoItem";
 
 export default function Todo() {
-  // const test = useSelector((state) => {
-  //   return state;
-  // });
+
+  const [todo, setTodo] = useState("");
+
+  const taskHandler = (event) => {
+    setTodo(event.target.value);
+  };
 
   // TO access the state from store
   const _todos = useSelector((state) => state.todoReducer);
@@ -15,14 +22,6 @@ export default function Todo() {
 
   // To dispatch (call actions) the actions
   const dispatch = useDispatch();
-
-  const [todo, setTodo] = useState("");
-
-  const [todos, setTodos] = useState([]); // array of objects
-
-  const taskHandler = (event) => {
-    setTodo(event.target.value);
-  };
 
   const _addTodo = () => {
     const obj = {
@@ -39,19 +38,14 @@ export default function Todo() {
     dispatch(deleteTodo(id));
   };
 
-  const updateTodo = (id, value) => {
-    const update = todos.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          task: value,
-        };
-      }
-
-      return todo;
-    });
-    setTodos(update);
+  const _updateTodo = (id, value) => {
+    const data = {
+      id,
+      task: value,
+    };
+    dispatch(updateTodo(data));
   };
+
 
   return (
     <div>
@@ -73,26 +67,12 @@ export default function Todo() {
             <TodoItem
               {...todo}
               deleteTodo={_deleteTodo}
-              updateTodo={updateTodo}
+              updateTodo={_updateTodo}
             />
           </React.Fragment>
         );
       })}
+
     </div>
   );
 }
-
-// `
-// C1 -- store
-// - c2 -- store
-//   - c3 -- store
-//    ---...c100 -- store
-
-//   FLUX arch.
-
-//   actions
-
-//   reducers state
-
-//   store - combine all the state
-// `

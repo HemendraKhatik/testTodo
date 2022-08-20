@@ -12,4 +12,11 @@ const deleteTodo = (data) => {
   };
 };
 
-export { addTodo, deleteTodo };
+const updateTodo = (data) => {
+  return {
+    type: "UPDATE_TODO",
+    payload: data, // {id:id,task:task}
+  };
+};
+
+export { addTodo, deleteTodo, updateTodo };
